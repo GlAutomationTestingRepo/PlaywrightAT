@@ -23,7 +23,7 @@ export class Posters extends BasePage{
 
     SubContainers={
         Categories:this.Containers.MainPage.FiltrationContainer.locator("//ul[@class='MuiList-root MuiList-dense css-1uzmcsd']"),
-        ProductContainer:this.Containers.OrderContainers.OrderContainer.locator("//tr[@class='MuiTableRow-root css-3akvgz']"),
+        ProductContainer:this.Containers.OrderContainers.OrderContainer.locator("(//tbody[@class='MuiTableBody-root css-1xnox0e'])[1]"),
     };
 
     Elements={
@@ -37,8 +37,8 @@ export class Posters extends BasePage{
             Customer:this.Containers.ProductContainers.TableContainer.locator("(//div[@class='MuiTypography-root MuiTypography-body2 css-1wk3cmv'])[1]"),
             Reference:this.Containers.OrderContainers.TableContainer.locator("(//span[@class='MuiTypography-root MuiTypography-body2 css-68o8xu'])[2]"),
             AmountOfOrders:this.Containers.OrderContainers.PageNavigationContainer.locator("//p[@class='MuiTypography-root MuiTypography-body2 css-68o8xu']"),
+            ItemsReferenceInOrders:this.SubContainers.ProductContainer.locator("//td[@class='MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium css-q34dxg']"),
         },
-        
     };
 
     async SelectSpecificCategory (Value:string){
@@ -70,6 +70,32 @@ export class Posters extends BasePage{
                     await this.page.waitForSelector(this.getTableContainer);
                     await this.Elements.Fields.Customer.click()
                     await this.page.waitForSelector(this.getHistoryContainer);
+                    const AmountOfOrdersForCustomer=await this.Elements.Buttons.AmountOfOrders.textContent();
+                    if(AmountOfOrdersForCustomer==="1 order"){
+                        //logic for customer with 1 order only meaning no need to click on the nex order
+                        await this.Elements.Buttons.AmountOfOrders.click();
+                        await this.Elements.Fields.Reference.click();
+                        await this.page.waitForSelector(this.getOrderContainer);
+                        await this.page.waitForTimeout(1000);
+                        const ItemReferenceInOrders=this.Elements.Fields.ItemsReferenceInOrders;;
+                        const NumericAmountOfItemsInOrder=await ItemReferenceInOrders.count();
+                        
+                        
+
+                    }else{
+                        //logic for customers with more than 1 order meaning need to navigate through some pages
+                        await this.Elements.Buttons.AmountOfOrders.click();
+                        await this.Elements.Fields.Reference.click();
+                        await this.page.waitForSelector(this.getOrderContainer);
+                        await this.page.waitForTimeout(1000);
+                        const MaxNumberOfOrders=await this.Elements.Fields.AmountOfOrders.textContent();
+                        const SplitArray=MaxNumberOfOrders?.split('/').map(item=>item.trim());
+                        const MaxAmountOfPagesString=SplitArray[1];
+                    // const MaxNumberOfOrdersInt=Number(MaxAmountOfPagesString);
+
+                    // for(let i=0;i<MaxNumberOfOrdersInt;i++){
+                    //     await this.Elements.Buttons.NextPage.click();
+                    };
                     await this.Elements.Buttons.AmountOfOrders.click();
                     await this.Elements.Fields.Reference.click();
                     await this.page.waitForSelector(this.getOrderContainer);
