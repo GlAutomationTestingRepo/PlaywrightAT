@@ -1,0 +1,12 @@
+//  const SomeWhat="//ul[@class='MuiImageList-root MuiImageList-standard css-tidt1y'] //a[@class='MuiImageListItem-root MuiImageListItem-standard css-yfic6z']";
+        
+//         for (let i=0;i<SomeWhat.length;i++){
+//         await this.Elements.SomeWhat.click();
+//         await this.page.waitForSelector(this.getMainContainer);
+//         const ReviewValue=await this.Elements.Reviews.textContent();
+//         if(ReviewValue==="0"){
+//             console.log(ReviewValue);
+//         }else{
+//             console.log(ReviewValue);
+//         };
+//     };

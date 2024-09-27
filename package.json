@@ -1,0 +1,15 @@
+{
+  "name": "playwrightat",
+  "version": "1.0.0",
+  "description": "none",
+  "main": "index.js",
+  "scripts": {
+    "testSmoke": "npx playwright test --grep @nesmoke --headed"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.46.1",
+    "@types/node": "^22.5.3"
+  }
+}
