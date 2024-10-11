@@ -31,13 +31,13 @@ export class Posters extends BasePage{
         Buttons:{
             ReviewsButton:this.Containers.ProductContainers.HeaderProductContainer.locator("//a[@id='tabheader-reviews']"),
             AmountOfOrders:this.Containers.CustomerProfileContainers.HistoryContainer.locator("(//a[@class='MuiTypography-root MuiTypography-body2 MuiLink-root MuiLink-underlineAlways RaLink-link css-sdmzfa'])[1]"),
-            NextPage:this.Containers.OrderContainers.PageNavigationContainer.locator("//a[@class='MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-1j7qk7u']"),
+            NextPage:this.Containers.OrderContainers.PageNavigationContainer.locator("//a[@aria-label='Go to next page']"),
         },
         Fields:{
             Customer:this.Containers.ProductContainers.TableContainer.locator("(//div[@class='MuiTypography-root MuiTypography-body2 css-1wk3cmv'])[1]"),
             Reference:this.Containers.OrderContainers.TableContainer.locator("(//span[@class='MuiTypography-root MuiTypography-body2 css-68o8xu'])[2]"),
             AmountOfOrders:this.Containers.OrderContainers.PageNavigationContainer.locator("//p[@class='MuiTypography-root MuiTypography-body2 css-68o8xu']"),
-            ItemsReferenceInOrders:this.SubContainers.ProductContainer.locator("//td[@class='MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium css-q34dxg']"),
+            ItemsReferenceInOrders:this.SubContainers.ProductContainer.locator("//a[@class='MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways RaLink-link css-19ifyur']"),
         },
     };
 
@@ -57,7 +57,6 @@ export class Posters extends BasePage{
             const link = productLinks[i];
             if (link) {
                 const nameOfProduct=await productLinks[i].textContent();
-                console.log(nameOfProduct);
                 await link.click();
                 await this.page.waitForSelector(this.getMainContainer);
                 await this.page.waitForTimeout(1000);
@@ -71,57 +70,67 @@ export class Posters extends BasePage{
                     await this.Elements.Fields.Customer.click()
                     await this.page.waitForSelector(this.getHistoryContainer);
                     const AmountOfOrdersForCustomer=await this.Elements.Buttons.AmountOfOrders.textContent();
-                    if(AmountOfOrdersForCustomer==="1 order"){
-                        //logic for customer with 1 order only meaning no need to click on the nex order
-                        await this.Elements.Buttons.AmountOfOrders.click();
-                        await this.Elements.Fields.Reference.click();
-                        await this.page.waitForSelector(this.getOrderContainer);
-                        await this.page.waitForTimeout(1000);
-                        const ItemReferenceInOrders=this.Elements.Fields.ItemsReferenceInOrders;;
-                        const NumericAmountOfItemsInOrder=await ItemReferenceInOrders.count();
-                        
-                        
-
-                    }else{
-                        //logic for customers with more than 1 order meaning need to navigate through some pages
-                        await this.Elements.Buttons.AmountOfOrders.click();
-                        await this.Elements.Fields.Reference.click();
-                        await this.page.waitForSelector(this.getOrderContainer);
-                        await this.page.waitForTimeout(1000);
-                        const MaxNumberOfOrders=await this.Elements.Fields.AmountOfOrders.textContent();
-                        const SplitArray=MaxNumberOfOrders?.split('/').map(item=>item.trim());
-                        const MaxAmountOfPagesString=SplitArray[1];
-                    // const MaxNumberOfOrdersInt=Number(MaxAmountOfPagesString);
-
-                    // for(let i=0;i<MaxNumberOfOrdersInt;i++){
-                    //     await this.Elements.Buttons.NextPage.click();
-                    };
-                    await this.Elements.Buttons.AmountOfOrders.click();
-                    await this.Elements.Fields.Reference.click();
-                    await this.page.waitForSelector(this.getOrderContainer);
-                    await this.page.waitForTimeout(1000);
-                    const MaxNumberOfOrders=await this.Elements.Fields.AmountOfOrders.textContent();
-                    const SplitArray=MaxNumberOfOrders?.split('/').map(item=>item.trim());
-                    // const MaxAmountOfPagesString=SplitArray[1];
-                    // const MaxNumberOfOrdersInt=Number(MaxAmountOfPagesString);
-
-                    // for(let i=0;i<MaxNumberOfOrdersInt;i++){
-                    //     await this.Elements.Buttons.NextPage.click();
-                        
-                    // }
                     
-                    //сделать цикл где будет сравниваться нужный элемент с переменной
-                    //если данного элемента нету на странице нажимать на следующий
-                    //и так далее
-                    //когда нужный айтем будет найдет с того места
-                    //взять имя фамилию номер ордера
-                    //и составить предложение 
-                    //имя+фамилия купил +название продукта +число числа,вот соответствующий ордер :+номер ореда
-                    break;
-                };
-            };
-        };
-    };
+                    if(AmountOfOrdersForCustomer==="1 order"){
+                        await this.Elements.Buttons.AmountOfOrders.click();
+                        await this.Elements.Fields.Reference.click();
+                        await this.page.waitForSelector(this.getOrderContainer);
+                        await this.page.waitForTimeout(1000);
+
+                        let products: Set<string> = new Set();
+                        const productElements = await this.page.$$("(//tbody[@class='MuiTableBody-root css-1xnox0e'])[1] //a[@class='MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways RaLink-link css-19ifyur']");
+                        for (let element of productElements){    
+                            let productText=await element.textContent();
+                            if (productText !== null){
+                                products.add(productText);
+                            }else{
+                                console.log("null")
+                            }
+                        }
+                            if (nameOfProduct !==null && !products.has(nameOfProduct)){
+                            }else{
+                                break;
+                            }             
+                    }else{
+                        await this.Elements.Buttons.AmountOfOrders.click();
+						await this.Elements.Fields.Reference.click();
+						await this.page.waitForSelector(this.getOrderContainer);
+						await this.page.waitForTimeout(1000);
+
+                        let MaxNumberOfOrdersInt=0
+                        const MaxNumberOfOrders = await this.Elements.Fields.AmountOfOrders.textContent();
+						if(MaxNumberOfOrders){
+                            const SplitArray = MaxNumberOfOrders?.split('/').map(item => item.trim());
+					        const MaxAmountOfPagesString = SplitArray[1];
+						    MaxNumberOfOrdersInt = Number(MaxAmountOfPagesString);
+                        }else{
+                            console.log("null")
+                        }
+                        let products: Set<string> = new Set();
+                        for (let v = 0; v < MaxNumberOfOrdersInt; v++) {                        
+                            const productElements = await this.page.$$("(//tbody[@class='MuiTableBody-root css-1xnox0e'])[1] //a[@class='MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways RaLink-link css-19ifyur']");
+                            for (let element of productElements){
+                                let productText=await element.textContent();
+                                if(productText !== null){
+                                    products.add(productText);
+                                }else{
+                                    console.log("null");
+                                }
+                            }
+                        if(nameOfProduct !==null && !products.has(nameOfProduct)){
+                            await this.Elements.Buttons.NextPage.click();
+                            await this.page.waitForTimeout(2000);
+                        }else{
+                            break;
+                        }
+                        }                   
+                    }
+                }
+            }
+        }
+    }        
+            
+        
 
     get getFiltrationContainer(){
         return "//div[@class='MuiCardContent-root css-14x6a5n']";

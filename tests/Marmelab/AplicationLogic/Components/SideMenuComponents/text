@@ -10,3 +10,113 @@
 //             console.log(ReviewValue);
 //         };
 //     };
+
+// async NoNameYet() {
+// 	const produccts: string[] = []; // Открывающая фигурная скобка функции
+// 	for (let i = 0; i < 10; i++) { // Открывающая фигурная скобка цикла
+// 			const productLinks = await this.page.$$("xpath=//ul[@class='MuiImageList-root MuiImageList-standard css-tidt1y'] //div[@class='MuiImageListItemBar-title css-1w4d4gp']");
+			
+// 			if (productLinks.length === 0) {
+// 					await this.page.waitForTimeout(1000);
+// 					break; // Закрывающая фигурная скобка if
+// 			}
+
+// 			const link = productLinks[i];
+// 			if (link) { // Открывающая фигурная скобка if
+// 					const nameOfProduct = await link.textContent();
+// 					console.log(nameOfProduct);
+// 					await link.click();
+// 					await this.page.waitForSelector(this.getMainContainer);
+// 					await this.page.waitForTimeout(1000);
+
+// 					const reviewValue = await this.Elements.ReviewsCounter.textContent();
+// 					if (reviewValue === "0") { // Открывающая фигурная скобка if
+// 							await this.page.goBack();
+// 					} else { // Закрывающая фигурная скобка else
+// 							await this.Elements.Buttons.ReviewsButton.click();
+// 							await this.page.waitForSelector(this.getTableContainer);
+// 							await this.Elements.Fields.Customer.click();
+// 							await this.page.waitForSelector(this.getHistoryContainer);
+							
+// 							const AmountOfOrdersForCustomer = await this.Elements.Buttons.AmountOfOrders.textContent();
+							
+// 							if (AmountOfOrdersForCustomer === "1 order") { // Открывающая фигурная скобка if
+// 									// Логика для клиента с 1 заказом
+// 									await this.Elements.Buttons.AmountOfOrders.click();
+// 									await this.Elements.Fields.Reference.click();
+// 									await this.page.waitForSelector(this.getOrderContainer);
+// 									await this.page.waitForTimeout(1000);
+
+// 									const ItemReferenceInOrders = this.Elements.Fields.ItemsReferenceInOrders;
+// 									const NumericAmountOfItemsInOrder = await ItemReferenceInOrders.count();
+
+// 									for (let j = 0; j < NumericAmountOfItemsInOrder; j++) { // Открывающая фигурная скобка цикла
+// 											const NameOfProductsInOrders = await ItemReferenceInOrders.textContent();
+// 											if (nameOfProduct === NameOfProductsInOrders) {
+// 													console.log("true");
+// 											} else {
+// 													console.log("false");
+// 											} // Закрывающая фигурная скобка цикла
+// 									} // Закрывающая фигурная скобка if
+// 							} else { // Закрывающая фигурная скобка else
+// 									// Логика для клиентов с более чем 1 заказом
+// 									await this.Elements.Buttons.AmountOfOrders.click();
+// 									await this.Elements.Fields.Reference.click();
+// 									await this.page.waitForSelector(this.getOrderContainer);
+// 									await this.page.waitForTimeout(1000);
+
+// 									const MaxNumberOfOrders = await this.Elements.Fields.AmountOfOrders.textContent();
+// 									const SplitArray = MaxNumberOfOrders?.split('/').map(item => item.trim());
+// 									const MaxAmountOfPagesString = SplitArray[1];
+// 									const MaxNumberOfOrdersInt = Number(MaxAmountOfPagesString);
+
+// 									for (let v = 0; v < MaxNumberOfOrdersInt; v++) { // Открывающая фигурная скобка цикла
+// 											// Собираем продукты на текущей странице
+// 											const products = await this.page.$$("xpath=//a[@class='MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways RaLink-link css-19ifyur']");
+											
+// 											for (let b = 0; b < products.length; b++) { // Открывающая фигурная скобка цикла
+// 													const nameOfProductsInOrders = await products[b].innerText();
+// 													produccts.push(nameOfProductsInOrders);
+
+// 													if (nameOfProductsInOrders === nameOfProduct) { // Открывающая фигурная скобка if
+// 															console.log("Product found: " + nameOfProductsInOrders);
+// 															break; // Продукт найден, выходим из внутреннего цикла
+// 													} // Закрывающая фигурная скобка if
+// 											} // Закрывающая фигурная скобка внутреннего цикла
+
+// 											// Проверяем, найден ли продукт
+// 											if (produccts.includes(nameOfProduct)) {
+// 													break; // Выходим из внешнего цикла, если продукт найден
+// 											} // Закрывающая фигурная скобка if
+
+// 											// Переход на следующую страницу
+// 											console.log("Product not found, going to next page");
+// 											await this.page.waitForTimeout(2000);
+// 											await this.Elements.Buttons.NextPage.click();
+// 									} // Закрывающая фигурная скобка внешнего цикла
+// 							} // Закрывающая фигурная скобка else
+// 					} // Закрывающая фигурная скобка if
+// 			} // Закрывающая фигурная скобка if
+// 	} // Закрывающая фигурная скобка внешнего цикла
+// }
+
+// // Геттеры
+// get getFiltrationContainer() {
+// 	return "//div[@class='MuiCardContent-root css-14x6a5n']";
+// }
+
+// get getMainContainer() {
+// 	return "//div[@class='MuiTabs-flexContainer css-k008qs']";
+// }
+
+// get getTableContainer() {
+// 	return "//table[@class='MuiTable-root RaDatagrid-table css-1owb465']";
+// }
+
+// get getHistoryContainer() {
+// 	return "//div[@class='MuiGrid-root MuiGrid-container css-tuxzvu']";
+// }
+
+// get getOrderContainer() {
+// 	return "//div[@class='MuiCardContent-root css-1qw96cp']";
+// }
