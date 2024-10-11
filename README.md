@@ -1,2 +1,2 @@
 # PlaywrightAT
-Glebs Lusnickis repository where i will show my knowledge of Playright
+Glebs Lusnickis repository where i will show my knowledge of Playwright
