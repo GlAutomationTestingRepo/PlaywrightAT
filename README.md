@@ -18,10 +18,10 @@ The **PlaywrightAT** project is created to demonstrate automation testing skills
 To install the project, follow these steps:
 
 1. Clone the repository:
-   https://github.com/GlAutomationTestingRepo/PlaywrightAT.git
+   - https://github.com/GlAutomationTestingRepo/PlaywrightAT.git
 ## Install playwright 
 
-npx playwright install
+- npx playwright install
 
 ## Usage
 
