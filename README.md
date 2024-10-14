@@ -33,15 +33,15 @@ npx playwright test TestCase.spec.ts --headed
 MarmelabRefactored - Final version of my project, where i Used POM in the right way
 
 1. Application logic
-1.1. Components - All Neccessary Blocks of UI whicth are grouped by pages
-1.2. Pages - Login Page, PageManager , Base Page
+ - Components - All Neccessary Blocks of UI whicth are grouped by pages
+ - Pages - Login Page, PageManager , Base Page
 
 2.Tests
-2.1 Base Test
-2.2 BasicTestCase.spec.ts - Main Test
+ - Base Test
+ - BasicTestCase.spec.ts - Main Test
 
 3.Utils
-3.1 Enums -custom enums whicth will be used in the test
+ - Enums -custom enums whicth will be used in the test
 
 ## Author
 Glebs Lusnickis
