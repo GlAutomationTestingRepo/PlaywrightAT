@@ -26,7 +26,7 @@ To install the project, follow these steps:
 ## Usage
 
 to run test,execute this command:
-npx playwright test TestCase.spec.ts --headed
+- npx playwright test TestCase.spec.ts --headed
 
 ## Project structure
 
