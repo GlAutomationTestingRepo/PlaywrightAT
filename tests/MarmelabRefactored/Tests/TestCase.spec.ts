@@ -4,7 +4,7 @@ import {expect} from "@playwright/test";
 
 
 test.describe('Here is some of my test Cases',async()=>{
-	test.skip('Customer Creation and Deleting a Customer',async({pageManager})=>{
+	test('Customer Creation and Deleting a Customer',async({pageManager})=>{
 
 		await pageManager.sideMenuItems.SelectSpecificMenuItem(SideMenuEnums.Customers);
 		await pageManager.headerToolBar.PressOnCreate();
